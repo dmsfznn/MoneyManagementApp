@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php artisan migrate:*)",
+      "Bash(php artisan db:seed:*)",
+      "Bash(php artisan tinker:*)",
+      "Bash(php artisan route:list:*)",
+      "Bash(findstr:*)",
+      "Bash(curl:*)",
+      "Bash(taskkill:*)",
+      "Bash(php artisan cache:clear:*)",
+      "Bash(php artisan config:clear:*)",
+      "Bash(php artisan route:*)",
+      "Bash(php artisan view:clear:*)",
+      "Bash(php artisan session:table:*)",
+      "Bash(php artisan serve:*)",
+      "Bash(timeout:*)",
+      "Bash(php artisan make:controller:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
