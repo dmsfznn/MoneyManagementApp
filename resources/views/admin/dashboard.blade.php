@@ -263,6 +263,61 @@
         </div>
     </div>
 
+    <!-- Password Reset Management -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-shadcn">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="card-title mb-0">Password Reset Requests</h5>
+                        <a href="{{ route('admin.password-resets.index') }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-key me-1"></i> Manage Requests
+                        </a>
+                    </div>
+
+                    @if(isset($passwordResetStats['pending']) && $passwordResetStats['pending'] > 0)
+                        <div class="alert alert-warning alert-sm mb-3">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>{{ $passwordResetStats['pending'] }}</strong> password reset request(s) pending
+                            <a href="{{ route('admin.password-resets.index') }}" class="alert-link ms-2">View Now</a>
+                        </div>
+                    @endif
+
+                    <div class="row text-center">
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="p-3 bg-light rounded">
+                                <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                                <h6 class="mb-1">Pending</h6>
+                                <span class="badge bg-warning fs-6">{{ $passwordResetStats['pending'] ?? 0 }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="p-3 bg-light rounded">
+                                <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                                <h6 class="mb-1">Completed</h6>
+                                <span class="badge bg-success fs-6">{{ $passwordResetStats['completed'] ?? 0 }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="p-3 bg-light rounded">
+                                <i class="fas fa-calendar fa-2x text-info mb-2"></i>
+                                <h6 class="mb-1">Today</h6>
+                                <span class="badge bg-info fs-6">{{ $passwordResetStats['today'] ?? 0 }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="p-3 bg-light rounded">
+                                <i class="fas fa-list fa-2x text-primary mb-2"></i>
+                                <h6 class="mb-1">Total</h6>
+                                <span class="badge bg-primary fs-6">{{ $passwordResetStats['total'] ?? 0 }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- System Overview -->
     <div class="row">
         <div class="col-12">

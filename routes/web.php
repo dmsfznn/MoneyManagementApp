@@ -40,6 +40,18 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
+
+    // Password Reset Management
+    Route::resource('/password-resets', \App\Http\Controllers\Admin\PasswordResetController::class, [
+        'index' => 'index',
+        'edit' => 'edit',
+        'update' => 'update',
+        'destroy' => 'destroy'
+    ])->parameters([
+        'password-resets' => 'passwordResetRequest'
+    ])->names('password-resets');
+    Route::post('/password-resets/{passwordResetRequest}/cancel', [\App\Http\Controllers\Admin\PasswordResetController::class, 'cancel'])->name('password-resets.cancel');
+    Route::get('/password-resets/statistics', [\App\Http\Controllers\Admin\PasswordResetController::class, 'statistics'])->name('password-resets.statistics');
 });
 
 // User Routes
@@ -53,3 +65,11 @@ Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     Route::resource('/budgets', BudgetController::class);
     Route::put('/budgets/{budget}/toggle', [BudgetController::class, 'toggle'])->name('budgets.toggle');
 });
+
+// Debug Routes (Development Only)
+if (app()->environment(['local', 'testing'])) {
+    Route::prefix('debug')->name('debug.')->group(function () {
+        Route::get('/email', [\App\Http\Controllers\Debug\EmailController::class, 'debug'])->name('email');
+        Route::post('/email/test', [\App\Http\Controllers\Debug\EmailController::class, 'testEmail'])->name('email.test');
+    });
+}

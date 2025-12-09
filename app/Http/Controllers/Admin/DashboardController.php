@@ -102,6 +102,9 @@ class DashboardController extends Controller
         // Sort all activities by created_at
         $recentActivities = $recentActivities->sortByDesc('created_at')->take(10)->values();
 
+        // Get password reset statistics
+        $passwordResetStats = \App\Services\PasswordResetService::getStatistics();
+
         // System Overview Data
         $systemStatus = [
             'server' => $this->getServerStatus(),
@@ -117,7 +120,8 @@ class DashboardController extends Controller
             'newThisMonth',
             'recentRegistrations',
             'recentActivities',
-            'systemStatus'
+            'systemStatus',
+            'passwordResetStats'
         ));
     }
 
