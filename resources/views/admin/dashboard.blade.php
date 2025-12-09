@@ -278,32 +278,71 @@
                     </div>
 
                     <div class="row text-center">
+                        <!-- Server Status -->
                         <div class="col-md-3 col-6 mb-3">
-                            <div class="p-3 bg-light rounded">
+                            <div class="p-3 bg-light rounded position-relative">
                                 <i class="fas fa-server fa-2x text-primary mb-2"></i>
                                 <h6 class="mb-1">Server Status</h6>
-                                <span class="badge bg-success">Online</span>
+                                <span class="badge @if($systemStatus['server']['status'] == 'online') bg-success @elseif($systemStatus['server']['status'] == 'slow') bg-warning @else bg-danger @endif">
+                                    @if($systemStatus['server']['status'] == 'online') Online @elseif($systemStatus['server']['status'] == 'slow') Slow @else Offline @endif
+                                </span>
+                                <small class="d-block mt-1 text-muted">
+                                    Uptime: {{ $systemStatus['server']['uptime'] }}
+                                </small>
+                                <small class="d-block text-muted">
+                                    {{ $systemStatus['server']['response_time'] }}ms
+                                </small>
                             </div>
                         </div>
+
+                        <!-- Database Status -->
                         <div class="col-md-3 col-6 mb-3">
                             <div class="p-3 bg-light rounded">
                                 <i class="fas fa-database fa-2x text-info mb-2"></i>
                                 <h6 class="mb-1">Database</h6>
-                                <span class="badge bg-success">Healthy</span>
+                                <span class="badge @if($systemStatus['database']['status'] == 'healthy') bg-success @else bg-danger @endif">
+                                    @if($systemStatus['database']['status'] == 'healthy') Healthy @else Error @endif
+                                </span>
+                                <small class="d-block mt-1 text-muted">
+                                    {{ $systemStatus['database']['tables'] }} tables
+                                </small>
+                                <small class="d-block text-muted">
+                                    {{ $systemStatus['database']['connection'] }}
+                                </small>
                             </div>
                         </div>
+
+                        <!-- Memory Status -->
                         <div class="col-md-3 col-6 mb-3">
                             <div class="p-3 bg-light rounded">
-                                <i class="fas fa-memory fa-2x text-warning mb-2"></i>
+                                <i class="fas fa-memory fa-2x @if($systemStatus['memory']['status'] == 'good') text-success @elseif($systemStatus['memory']['status'] == 'moderate') text-warning @else text-danger @endif mb-2"></i>
                                 <h6 class="mb-1">Memory</h6>
-                                <span class="badge bg-warning">Moderate</span>
+                                <span class="badge @if($systemStatus['memory']['status'] == 'good') bg-success @elseif($systemStatus['memory']['status'] == 'moderate') bg-warning @else bg-danger @endif">
+                                    @if($systemStatus['memory']['status'] == 'good') Good @elseif($systemStatus['memory']['status'] == 'moderate') Moderate @else Critical @endif
+                                </span>
+                                <small class="d-block mt-1 text-muted">
+                                    {{ $systemStatus['memory']['used'] }} / {{ $systemStatus['memory']['limit'] }}
+                                </small>
+                                <small class="d-block text-muted">
+                                    {{ $systemStatus['memory']['percentage'] }}% used
+                                </small>
                             </div>
                         </div>
+
+                        <!-- Storage Status -->
                         <div class="col-md-3 col-6 mb-3">
                             <div class="p-3 bg-light rounded">
-                                <i class="fas fa-hdd fa-2x text-secondary mb-2"></i>
+                                <i class="fas fa-hdd fa-2x @if($systemStatus['storage']['status'] == 'available') text-success @elseif($systemStatus['storage']['status'] == 'warning') text-warning @else text-danger @endif mb-2"></i>
                                 <h6 class="mb-1">Storage</h6>
-                                <span class="badge bg-success">Available</span>
+                                <span class="badge @if($systemStatus['storage']['status'] == 'available') bg-success @elseif($systemStatus['storage']['status'] == 'warning') bg-warning @else bg-danger @endif">
+                                    @if($systemStatus['storage']['status'] == 'available') Available @elseif($systemStatus['storage']['status'] == 'warning') Low @else Critical @endif
+                                </span>
+                                <small class="d-block mt-1 text-muted">
+                                    {{ $systemStatus['storage']['free'] }} free
+                                </small>
+                                <small class="d-block text-muted">
+                                    {{ $systemStatus['storage']['percentage'] }}% used
+                                </small>
                             </div>
                         </div>
                     </div>
