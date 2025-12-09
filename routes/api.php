@@ -68,11 +68,3 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/reports/export/pdf', [ReportsController::class, 'exportPdf']);
     Route::get('/reports/export/excel', [ReportsController::class, 'exportExcel']);
 });
-
-// Test route
-Route::get('/test', function () {
-    return response()->json([
-        'message' => 'Money Management API is working!',
-        'version' => '1.0.0'
-    ]);
-});
