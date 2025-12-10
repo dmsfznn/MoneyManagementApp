@@ -25,15 +25,15 @@ class BudgetController extends Controller
         $user = Auth::user();
 
         // Get date filter from request
-        $dateFilter = $request->get('filter', DateFilterService::FILTER_MONTHLY);
+        $filter = $request->get('filter', DateFilterService::FILTER_MONTHLY);
         $customDate = $request->get('custom_date') ? Carbon::parse($request->get('custom_date')) : null;
 
         // Get date range
-        $dateRange = DateFilterService::getDateRange($dateFilter, $customDate);
-        $dateRangeText = DateFilterService::getDateRangeText($dateFilter, $customDate);
+        $dateRange = DateFilterService::getDateRange($filter, $customDate);
+        $dateRangeText = DateFilterService::getDateRangeText($filter, $customDate);
 
         // Map date filters to budget periods
-        $period = in_array($dateFilter, [DateFilterService::FILTER_MONTHLY, 'custom']) ? 'monthly' : 'yearly';
+        $period = in_array($filter, [DateFilterService::FILTER_MONTHLY, 'custom']) ? 'monthly' : 'yearly';
         $monthYear = $dateRange['start']->format('Y-m');
 
         // Get expense categories for dropdown
@@ -67,7 +67,7 @@ class BudgetController extends Controller
         return view('user.budgets.index', compact(
             'budgets',
             'expenseCategories',
-            'dateFilter',
+            'filter',
             'monthYear',
             'totalBudgetAmount',
             'totalSpent',

@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Session;
 class DateFilterService
 {
     const FILTER_DAILY = 'daily';
-    FILTER_WEEKLY = 'weekly';
-    FILTER_MONTHLY = 'monthly';
-    FILTER_YEARLY = 'yearly';
+    const FILTER_WEEKLY = 'weekly';
+    const FILTER_MONTHLY = 'monthly';
+    const FILTER_YEARLY = 'yearly';
 
     /**
      * Get available date filter options
