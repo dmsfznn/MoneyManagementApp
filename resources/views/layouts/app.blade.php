@@ -70,6 +70,12 @@
                                 </li>
                             @else
                                 <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('user.profile*') ? 'active' : '' }}"
+                                       href="{{ route('user.profile') }}">
+                                        <i class="fas fa-user-circle text-info"></i> Profile
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('user.dashboard') ? 'active' : '' }}"
                                        href="{{ route('user.dashboard') }}">
                                         <i class="fas fa-tachometer-alt"></i> Dashboard
@@ -97,12 +103,6 @@
                                     <a class="nav-link {{ request()->routeIs('user.reports') ? 'active' : '' }}"
                                        href="{{ route('user.reports') }}">
                                         <i class="fas fa-chart-bar"></i> Reports
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('user.profile*') ? 'active' : '' }}"
-                                       href="{{ route('user.profile') }}">
-                                        <i class="fas fa-user-circle text-info"></i> Profile
                                     </a>
                                 </li>
                             @endif
