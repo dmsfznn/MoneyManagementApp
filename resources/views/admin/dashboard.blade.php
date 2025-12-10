@@ -3,20 +3,26 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
-<div class="container mt-4">
-    <!-- Welcome Section -->
+<div class="container-fluid">
+    <!-- Welcome Section with Admin Profile -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card card-shadcn bg-gradient-primary text-white">
+            <div class="card card-shadcn bg-gradient-primary text-white border-0">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h1 class="h3 mb-1">Admin Dashboard</h1>
-                            <p class="mb-0 opacity-90">Welcome back, {{ auth()->user()->name }}! Here's your system overview.</p>
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <img src="{{ auth()->user()->profile_photo_url }}" alt="{{ auth()->user()->name }}"
+                                 class="rounded-circle border border-3 border-white" width="80" height="80"
+                                 style="object-fit: cover;">
                         </div>
-                        <div class="text-end">
-                            <h5 class="text-white-50 mb-0">Current Date</h5>
-                            <h4 class="mb-0">{{ now()->format('F j, Y') }}</h4>
+                        <div class="col">
+                            <h3 class="mb-1">Selamat Datang, {{ auth()->user()->name }}! 👑</h3>
+                            <p class="mb-0 opacity-90">{{ now()->format('l, d F Y') }} • {{ now()->format('H:i') }} • Administrator</p>
+                        </div>
+                        <div class="col-auto">
+                            <a href="{{ route('admin.profile.index') }}" class="btn btn-light btn-sm">
+                                <i class="fas fa-user-cog me-1"></i> Admin Profile
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -24,21 +30,26 @@
         </div>
     </div>
 
-    <!-- Stats Cards -->
+    <!-- Admin Stats Cards -->
     <div class="row mb-4">
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card card-shadcn border-primary border-4">
+            <div class="card card-shadcn border-primary border-3 h-100">
                 <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h5 class="card-title text-muted mb-0">Total Users</h5>
-                            <h3 class="text-primary mb-0">{{ $totalUsers }}</h3>
-                            <small class="text-muted">All registered users</small>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-primary text-white rounded-circle shadow">
-                                <i class="fas fa-users"></i>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="icon icon-shape bg-primary text-white rounded-circle me-3">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h6 class="text-primary mb-0">Total Pengguna</h6>
                             </div>
+                            <h3 class="mb-0 fw-bold text-primary">
+                                {{ $totalUsers }}
+                            </h3>
+                            <small class="text-muted">Semua pengguna terdaftar</small>
+                        </div>
+                        <div class="text-end">
+                            <i class="fas fa-user-tie text-primary opacity-25 fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -46,18 +57,23 @@
         </div>
 
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card card-shadcn border-success border-4">
+            <div class="card card-shadcn border-success border-3 h-100">
                 <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h5 class="card-title text-muted mb-0">Admin Users</h5>
-                            <h3 class="text-success mb-0">{{ $totalAdmins }}</h3>
-                            <small class="text-muted">System administrators</small>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-success text-white rounded-circle shadow">
-                                <i class="fas fa-user-shield"></i>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="icon icon-shape bg-success text-white rounded-circle me-3">
+                                    <i class="fas fa-user-shield"></i>
+                                </div>
+                                <h6 class="text-success mb-0">Administrator</h6>
                             </div>
+                            <h3 class="mb-0 fw-bold text-success">
+                                {{ $totalAdmins }}
+                            </h3>
+                            <small class="text-muted">Pengelola sistem</small>
+                        </div>
+                        <div class="text-end">
+                            <i class="fas fa-crown text-success opacity-25 fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -65,18 +81,23 @@
         </div>
 
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card card-shadcn border-warning border-4">
+            <div class="card card-shadcn border-warning border-3 h-100">
                 <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h5 class="card-title text-muted mb-0">Regular Users</h5>
-                            <h3 class="text-warning mb-0">{{ $totalRegularUsers }}</h3>
-                            <small class="text-muted">Standard users</small>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-                                <i class="fas fa-user"></i>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="icon icon-shape bg-warning text-white rounded-circle me-3">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <h6 class="text-warning mb-0">Pengguna Biasa</h6>
                             </div>
+                            <h3 class="mb-0 fw-bold text-warning">
+                                {{ $totalRegularUsers }}
+                            </h3>
+                            <small class="text-muted">Pengguna standar</small>
+                        </div>
+                        <div class="text-end">
+                            <i class="fas fa-user-friends text-warning opacity-25 fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -84,18 +105,23 @@
         </div>
 
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card card-shadcn border-info border-4">
+            <div class="card card-shadcn border-info border-3 h-100">
                 <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h5 class="card-title text-muted mb-0">New This Month</h5>
-                            <h3 class="text-info mb-0">{{ $newThisMonth }}</h3>
-                            <small class="text-muted">Recent registrations</small>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-info text-white rounded-circle shadow">
-                                <i class="fas fa-chart-line"></i>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="icon icon-shape bg-info text-white rounded-circle me-3">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h6 class="text-info mb-0">Pengguna Baru</h6>
                             </div>
+                            <h3 class="mb-0 fw-bold text-info">
+                                {{ $newThisMonth }}
+                            </h3>
+                            <small class="text-muted">Bulan ini</small>
+                        </div>
+                        <div class="text-end">
+                            <i class="fas fa-user-plus text-info opacity-25 fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -107,40 +133,40 @@
     <div class="row mb-4">
         <!-- Quick Actions -->
         <div class="col-xl-8 col-lg-7 mb-4">
-            <div class="card card-shadcn">
+            <div class="card card-shadcn bg-gradient-info text-white border-0">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="card-title mb-0">Quick Actions</h5>
-                        <span class="badge bg-primary">Admin Panel</span>
+                        <h5 class="card-title mb-0">🚀 Aksi Cepat Admin</h5>
+                        <span class="badge bg-light text-info">Panel Administrator</span>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <a href="{{ route('admin.users.index') }}"
-                               class="btn btn-outline-primary btn-lg d-flex align-items-center justify-content-center gap-2 w-100">
-                                <i class="fas fa-users"></i>
-                                <span>Manage Users</span>
+                               class="btn btn-light btn-lg d-flex align-items-center justify-content-center gap-2 w-100">
+                                <i class="fas fa-users text-primary"></i>
+                                <span>Kelola Pengguna</span>
                             </a>
                         </div>
                         <div class="col-md-6">
                             <a href="{{ route('admin.users.create') }}"
-                               class="btn btn-outline-success btn-lg d-flex align-items-center justify-content-center gap-2 w-100">
-                                <i class="fas fa-user-plus"></i>
-                                <span>Add User</span>
+                               class="btn btn-light btn-lg d-flex align-items-center justify-content-center gap-2 w-100">
+                                <i class="fas fa-user-plus text-success"></i>
+                                <span>Tambah Pengguna</span>
                             </a>
                         </div>
                         <div class="col-md-6">
                             <a href="{{ route('admin.profile.index') }}"
-                               class="btn btn-outline-info btn-lg d-flex align-items-center justify-content-center gap-2 w-100">
-                                <i class="fas fa-user-circle"></i>
-                                <span>Profile</span>
+                               class="btn btn-light btn-lg d-flex align-items-center justify-content-center gap-2 w-100">
+                                <i class="fas fa-user-cog text-warning"></i>
+                                <span>Profil Admin</span>
                             </a>
                         </div>
                         <div class="col-md-6">
-                            <button class="btn btn-outline-secondary btn-lg d-flex align-items-center justify-content-center gap-2 w-100"
-                                    disabled>
-                                <i class="fas fa-cog"></i>
-                                <span>Settings</span>
-                            </button>
+                            <a href="{{ route('admin.password-resets.index') }}"
+                               class="btn btn-light btn-lg d-flex align-items-center justify-content-center gap-2 w-100">
+                                <i class="fas fa-key text-danger"></i>
+                                <span>Reset Password</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -149,11 +175,11 @@
 
         <!-- Recent Activity -->
         <div class="col-xl-4 col-lg-5 mb-4">
-            <div class="card card-shadcn">
+            <div class="card card-shadcn border-info border-2">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="card-title mb-0">Recent Activity</h5>
-                        <span class="badge bg-primary">Live</span>
+                        <h5 class="card-title mb-0">📊 Aktivitas Terkini</h5>
+                        <span class="badge bg-info">Live</span>
                     </div>
                     @if($recentActivities->count() > 0)
                         <div class="activity-list">
@@ -175,13 +201,13 @@
                             @endforeach
                         </div>
                         <div class="text-center mt-3">
-                            <a href="#" class="btn btn-outline-primary btn-sm">View All Activities</a>
+                            <a href="#" class="btn btn-outline-info btn-sm">Lihat Semua Aktivitas</a>
                         </div>
                     @else
                         <div class="text-center py-4">
                             <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                            <h6 class="text-muted">No recent activity</h6>
-                            <p class="text-muted small">System activities will appear here</p>
+                            <h6 class="text-muted">Belum ada aktivitas</h6>
+                            <p class="text-muted small">Aktivitas sistem akan muncul di sini</p>
                         </div>
                     @endif
                 </div>
@@ -192,22 +218,22 @@
     <!-- Recent Registrations -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card card-shadcn">
+            <div class="card card-shadcn border-success border-2">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="card-title mb-0">Recent Registrations</h5>
-                        <span class="badge bg-success">Last 30 Days</span>
+                        <h5 class="card-title mb-0">👥 Pendaftaran Terkini</h5>
+                        <span class="badge bg-success">30 Hari Terakhir</span>
                     </div>
                     @if($recentRegistrations->count() > 0)
                         <div class="table-responsive">
                             <table class="table table-sm table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Nama</th>
                                         <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Registered</th>
-                                        <th>Actions</th>
+                                        <th>Peran</th>
+                                        <th>Terdaftar</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -228,16 +254,19 @@
                                                 @if($user->role == 'admin')
                                                     <span class="badge bg-danger">Admin</span>
                                                 @else
-                                                    <span class="badge bg-primary">User</span>
+                                                    <span class="badge bg-primary">Pengguna</span>
                                                 @endif
                                             </td>
                                             <td>
-                                                <small>{{ $user->created_at->format('M d, Y') }}</small>
+                                                <small>{{ $user->created_at->format('d M Y') }}</small>
                                             </td>
                                             <td>
                                                 <div class="btn-group btn-group-sm">
-                                                    <a href="{{ route('admin.users.show', $user) }}" class="btn btn-outline-info" title="View">
+                                                    <a href="{{ route('admin.users.show', $user) }}" class="btn btn-outline-info" title="Lihat">
                                                         <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-outline-warning" title="Edit">
+                                                        <i class="fas fa-edit"></i>
                                                     </a>
                                                 </div>
                                             </td>
@@ -248,14 +277,14 @@
                         </div>
                         @if($recentRegistrations->count() >= 5)
                             <div class="text-center mt-3">
-                                <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary btn-sm">View All Users</a>
+                                <a href="{{ route('admin.users.index') }}" class="btn btn-outline-success btn-sm">Lihat Semua Pengguna</a>
                             </div>
                         @endif
                     @else
                         <div class="text-center py-4">
                             <i class="fas fa-user-plus fa-3x text-muted mb-3"></i>
-                            <h6 class="text-muted">No recent registrations</h6>
-                            <p class="text-muted small">No users have registered in the last 30 days</p>
+                            <h6 class="text-muted">Tidak ada pendaftaran baru</h6>
+                            <p class="text-muted small">Tidak ada pengguna yang mendaftar dalam 30 hari terakhir</p>
                         </div>
                     @endif
                 </div>
@@ -266,47 +295,47 @@
     <!-- Password Reset Management -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card card-shadcn">
+            <div class="card card-shadcn border-warning border-2">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="card-title mb-0">Password Reset Requests</h5>
-                        <a href="{{ route('admin.password-resets.index') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-key me-1"></i> Manage Requests
+                        <h5 class="card-title mb-0">🔑 Manajemen Reset Password</h5>
+                        <a href="{{ route('admin.password-resets.index') }}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-key me-1"></i> Kelola Permintaan
                         </a>
                     </div>
 
                     @if(isset($passwordResetStats['pending']) && $passwordResetStats['pending'] > 0)
                         <div class="alert alert-warning alert-sm mb-3">
                             <i class="fas fa-exclamation-triangle me-2"></i>
-                            <strong>{{ $passwordResetStats['pending'] }}</strong> password reset request(s) pending
-                            <a href="{{ route('admin.password-resets.index') }}" class="alert-link ms-2">View Now</a>
+                            <strong>{{ $passwordResetStats['pending'] }}</strong> permintaan reset password menunggu diproses
+                            <a href="{{ route('admin.password-resets.index') }}" class="alert-link ms-2">Lihat Sekarang</a>
                         </div>
                     @endif
 
                     <div class="row text-center">
                         <div class="col-md-3 col-6 mb-3">
-                            <div class="p-3 bg-light rounded">
+                            <div class="p-3 bg-light rounded border-warning border">
                                 <i class="fas fa-clock fa-2x text-warning mb-2"></i>
-                                <h6 class="mb-1">Pending</h6>
+                                <h6 class="mb-1">Menunggu</h6>
                                 <span class="badge bg-warning fs-6">{{ $passwordResetStats['pending'] ?? 0 }}</span>
                             </div>
                         </div>
                         <div class="col-md-3 col-6 mb-3">
-                            <div class="p-3 bg-light rounded">
+                            <div class="p-3 bg-light rounded border-success border">
                                 <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
-                                <h6 class="mb-1">Completed</h6>
+                                <h6 class="mb-1">Selesai</h6>
                                 <span class="badge bg-success fs-6">{{ $passwordResetStats['completed'] ?? 0 }}</span>
                             </div>
                         </div>
                         <div class="col-md-3 col-6 mb-3">
-                            <div class="p-3 bg-light rounded">
+                            <div class="p-3 bg-light rounded border-info border">
                                 <i class="fas fa-calendar fa-2x text-info mb-2"></i>
-                                <h6 class="mb-1">Today</h6>
+                                <h6 class="mb-1">Hari Ini</h6>
                                 <span class="badge bg-info fs-6">{{ $passwordResetStats['today'] ?? 0 }}</span>
                             </div>
                         </div>
                         <div class="col-md-3 col-6 mb-3">
-                            <div class="p-3 bg-light rounded">
+                            <div class="p-3 bg-light rounded border-primary border">
                                 <i class="fas fa-list fa-2x text-primary mb-2"></i>
                                 <h6 class="mb-1">Total</h6>
                                 <span class="badge bg-primary fs-6">{{ $passwordResetStats['total'] ?? 0 }}</span>
@@ -321,25 +350,25 @@
     <!-- System Overview -->
     <div class="row">
         <div class="col-12">
-            <div class="card card-shadcn">
+            <div class="card card-shadcn border-primary border-2">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="card-title mb-0">System Overview</h5>
+                        <h5 class="card-title mb-0">🖥️ Status Sistem</h5>
                         <div class="btn-group btn-group-sm">
-                            <button class="btn btn-outline-primary active">Today</button>
-                            <button class="btn btn-outline-primary">Week</button>
-                            <button class="btn btn-outline-primary">Month</button>
+                            <button class="btn btn-outline-primary active">Hari Ini</button>
+                            <button class="btn btn-outline-primary">Minggu</button>
+                            <button class="btn btn-outline-primary">Bulan</button>
                         </div>
                     </div>
 
                     <div class="row text-center">
                         <!-- Server Status -->
                         <div class="col-md-3 col-6 mb-3">
-                            <div class="p-3 bg-light rounded position-relative">
+                            <div class="p-3 bg-light rounded position-relative border-primary border">
                                 <i class="fas fa-server fa-2x text-primary mb-2"></i>
-                                <h6 class="mb-1">Server Status</h6>
+                                <h6 class="mb-1">Status Server</h6>
                                 <span class="badge @if($systemStatus['server']['status'] == 'online') bg-success @elseif($systemStatus['server']['status'] == 'slow') bg-warning @else bg-danger @endif">
-                                    @if($systemStatus['server']['status'] == 'online') Online @elseif($systemStatus['server']['status'] == 'slow') Slow @else Offline @endif
+                                    @if($systemStatus['server']['status'] == 'online') Online @elseif($systemStatus['server']['status'] == 'slow') Lambat @else Offline @endif
                                 </span>
                                 <small class="d-block mt-1 text-muted">
                                     Uptime: {{ $systemStatus['server']['uptime'] }}
@@ -352,14 +381,14 @@
 
                         <!-- Database Status -->
                         <div class="col-md-3 col-6 mb-3">
-                            <div class="p-3 bg-light rounded">
+                            <div class="p-3 bg-light rounded border-info border">
                                 <i class="fas fa-database fa-2x text-info mb-2"></i>
                                 <h6 class="mb-1">Database</h6>
                                 <span class="badge @if($systemStatus['database']['status'] == 'healthy') bg-success @else bg-danger @endif">
-                                    @if($systemStatus['database']['status'] == 'healthy') Healthy @else Error @endif
+                                    @if($systemStatus['database']['status'] == 'healthy') Sehat @else Error @endif
                                 </span>
                                 <small class="d-block mt-1 text-muted">
-                                    {{ $systemStatus['database']['tables'] }} tables
+                                    {{ $systemStatus['database']['tables'] }} tabel
                                 </small>
                                 <small class="d-block text-muted">
                                     {{ $systemStatus['database']['connection'] }}
@@ -369,34 +398,34 @@
 
                         <!-- Memory Status -->
                         <div class="col-md-3 col-6 mb-3">
-                            <div class="p-3 bg-light rounded">
+                            <div class="p-3 bg-light rounded border-warning border">
                                 <i class="fas fa-memory fa-2x @if($systemStatus['memory']['status'] == 'good') text-success @elseif($systemStatus['memory']['status'] == 'moderate') text-warning @else text-danger @endif mb-2"></i>
-                                <h6 class="mb-1">Memory</h6>
+                                <h6 class="mb-1">Memori</h6>
                                 <span class="badge @if($systemStatus['memory']['status'] == 'good') bg-success @elseif($systemStatus['memory']['status'] == 'moderate') bg-warning @else bg-danger @endif">
-                                    @if($systemStatus['memory']['status'] == 'good') Good @elseif($systemStatus['memory']['status'] == 'moderate') Moderate @else Critical @endif
+                                    @if($systemStatus['memory']['status'] == 'good') Baik @elseif($systemStatus['memory']['status'] == 'moderate') Sedang @else Kritis @endif
                                 </span>
                                 <small class="d-block mt-1 text-muted">
                                     {{ $systemStatus['memory']['used'] }} / {{ $systemStatus['memory']['limit'] }}
                                 </small>
                                 <small class="d-block text-muted">
-                                    {{ $systemStatus['memory']['percentage'] }}% used
+                                    {{ $systemStatus['memory']['percentage'] }}% terpakai
                                 </small>
                             </div>
                         </div>
 
                         <!-- Storage Status -->
                         <div class="col-md-3 col-6 mb-3">
-                            <div class="p-3 bg-light rounded">
+                            <div class="p-3 bg-light rounded border-success border">
                                 <i class="fas fa-hdd fa-2x @if($systemStatus['storage']['status'] == 'available') text-success @elseif($systemStatus['storage']['status'] == 'warning') text-warning @else text-danger @endif mb-2"></i>
-                                <h6 class="mb-1">Storage</h6>
+                                <h6 class="mb-1">Penyimpanan</h6>
                                 <span class="badge @if($systemStatus['storage']['status'] == 'available') bg-success @elseif($systemStatus['storage']['status'] == 'warning') bg-warning @else bg-danger @endif">
-                                    @if($systemStatus['storage']['status'] == 'available') Available @elseif($systemStatus['storage']['status'] == 'warning') Low @else Critical @endif
+                                    @if($systemStatus['storage']['status'] == 'available') Tersedia @elseif($systemStatus['storage']['status'] == 'warning') Rendah @else Kritis @endif
                                 </span>
                                 <small class="d-block mt-1 text-muted">
-                                    {{ $systemStatus['storage']['free'] }} free
+                                    {{ $systemStatus['storage']['free'] }} tersisa
                                 </small>
                                 <small class="d-block text-muted">
-                                    {{ $systemStatus['storage']['percentage'] }}% used
+                                    {{ $systemStatus['storage']['percentage'] }}% terpakai
                                 </small>
                             </div>
                         </div>
