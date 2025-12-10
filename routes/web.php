@@ -60,6 +60,13 @@ Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
     Route::get('/reports/export/pdf', [ReportsController::class, 'exportPdf'])->name('reports.export.pdf');
     Route::get('/reports/export/excel', [ReportsController::class, 'exportExcel'])->name('reports.export.excel');
+
+    // Profile Routes
+    Route::get('/profile', [\App\Http\Controllers\User\ProfileController::class, 'index'])->name('profile');
+    Route::put('/profile', [\App\Http\Controllers\User\ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [\App\Http\Controllers\User\ProfileController::class, 'updatePassword'])->name('profile.update-password');
+    Route::delete('/profile/photo', [\App\Http\Controllers\User\ProfileController::class, 'removePhoto'])->name('profile.remove-photo');
+
     Route::resource('/income', IncomeController::class);
     Route::resource('/expense', ExpenseController::class);
     Route::resource('/budgets', BudgetController::class);

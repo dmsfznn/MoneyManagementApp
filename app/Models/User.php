@@ -23,6 +23,11 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'remember_token',
+        'profile_photo',
+        'phone',
+        'bio',
+        'birth_date',
     ];
 
     /**
@@ -45,7 +50,21 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'birth_date' => 'date',
         ];
+    }
+
+    /**
+     * Get profile photo URL attribute
+     */
+    public function getProfilePhotoUrlAttribute()
+    {
+        if ($this->profile_photo) {
+            return asset('storage/profile-photos/' . $this->profile_photo);
+        }
+
+        // Default avatar based on name
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=3b82f6&background=f0f9ff&size=200';
     }
 
     /**
