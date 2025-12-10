@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Services\DateFilterService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Income;
 use App\Models\Category;
@@ -18,20 +20,37 @@ class IncomeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $incomes = Income::where('user_id', Auth::id())
-            ->with('category')
-            ->latest('date')
-            ->paginate(10);
+        // Get date filter from request
+        $filter = $request->get('filter', DateFilterService::FILTER_MONTHLY);
+        $customDate = $request->get('custom_date') ? Carbon::parse($request->get('custom_date')) : null;
 
-        $totalIncome = $incomes->sum('amount');
+        // Get date range
+        $dateRange = DateFilterService::getDateRange($filter, $customDate);
+        $dateRangeText = DateFilterService::getDateRangeText($filter, $customDate);
+
+        // Get incomes within date range
+        $incomesQuery = Income::where('user_id', Auth::id())
+            ->with('category')
+            ->whereBetween('date', [$dateRange['start'], $dateRange['end']]);
+
+        $incomes = $incomesQuery->latest('date')->paginate(10);
+        $totalIncome = $incomesQuery->sum('amount');
+
+        // Get current month income for comparison
         $monthlyIncome = Income::where('user_id', Auth::id())
             ->whereMonth('date', now()->month)
             ->whereYear('date', now()->year)
             ->sum('amount');
 
-        return view('user.income.index', compact('incomes', 'totalIncome', 'monthlyIncome'));
+        return view('user.income.index', compact(
+            'incomes',
+            'totalIncome',
+            'monthlyIncome',
+            'filter',
+            'dateRangeText'
+        ));
     }
 
     /**

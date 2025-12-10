@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Services\DateFilterService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Budget;
 use App\Models\Category;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class BudgetController extends Controller
@@ -22,8 +23,18 @@ class BudgetController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $filter = $request->get('filter', 'monthly'); // monthly, yearly
-        $monthYear = $request->get('month_year', Carbon::now()->format('Y-m'));
+
+        // Get date filter from request
+        $dateFilter = $request->get('filter', DateFilterService::FILTER_MONTHLY);
+        $customDate = $request->get('custom_date') ? Carbon::parse($request->get('custom_date')) : null;
+
+        // Get date range
+        $dateRange = DateFilterService::getDateRange($dateFilter, $customDate);
+        $dateRangeText = DateFilterService::getDateRangeText($dateFilter, $customDate);
+
+        // Map date filters to budget periods
+        $period = in_array($dateFilter, [DateFilterService::FILTER_MONTHLY, 'custom']) ? 'monthly' : 'yearly';
+        $monthYear = $dateRange['start']->format('Y-m');
 
         // Get expense categories for dropdown
         $expenseCategories = Category::where('type', 'expense')
@@ -33,7 +44,7 @@ class BudgetController extends Controller
         // Get budgets for the selected period
         $budgets = Budget::with('category')
             ->where('user_id', $user->id)
-            ->where('period', $filter)
+            ->where('period', $period)
             ->where('month_year', $monthYear)
             ->active()
             ->get();
@@ -45,9 +56,6 @@ class BudgetController extends Controller
         $almostExceededBudgets = 0;
 
         foreach ($budgets as $budget) {
-            // Debug: Log budget info
-            \Log::info("Budget ID: {$budget->id}, Category ID: {$budget->category_id}, Spent: {$budget->total_spent}");
-
             $totalSpent += $budget->total_spent;
             if ($budget->isExceeded()) {
                 $exceededBudgets++;
@@ -59,12 +67,13 @@ class BudgetController extends Controller
         return view('user.budgets.index', compact(
             'budgets',
             'expenseCategories',
-            'filter',
+            'dateFilter',
             'monthYear',
             'totalBudgetAmount',
             'totalSpent',
             'exceededBudgets',
-            'almostExceededBudgets'
+            'almostExceededBudgets',
+            'dateRangeText'
         ));
     }
 

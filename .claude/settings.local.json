@@ -15,7 +15,17 @@
       "Bash(php artisan session:table:*)",
       "Bash(php artisan serve:*)",
       "Bash(timeout:*)",
-      "Bash(php artisan make:controller:*)"
+      "Bash(php artisan make:controller:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(composer remove:*)",
+      "Bash(composer dump-autoload:*)",
+      "Bash(git add:*)",
+      "Bash(git reset:*)",
+      "Bash(php artisan make:migration:*)",
+      "Bash(php:*)",
+      "Bash(del:*)"
     ],
     "deny": [],
     "ask": []

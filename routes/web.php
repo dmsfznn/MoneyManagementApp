@@ -55,7 +55,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 });
 
 // User Routes
-Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
+Route::prefix('user')->name('user.')->middleware(['auth', 'date.filter'])->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
     Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
     Route::get('/reports/export/pdf', [ReportsController::class, 'exportPdf'])->name('reports.export.pdf');

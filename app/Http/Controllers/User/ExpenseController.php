@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Services\DateFilterService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Expense;
 use App\Models\Category;
@@ -18,20 +20,37 @@ class ExpenseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $expenses = Expense::where('user_id', Auth::id())
-            ->with('category')
-            ->latest('date')
-            ->paginate(10);
+        // Get date filter from request
+        $filter = $request->get('filter', DateFilterService::FILTER_MONTHLY);
+        $customDate = $request->get('custom_date') ? Carbon::parse($request->get('custom_date')) : null;
 
-        $totalExpenses = $expenses->sum('amount');
+        // Get date range
+        $dateRange = DateFilterService::getDateRange($filter, $customDate);
+        $dateRangeText = DateFilterService::getDateRangeText($filter, $customDate);
+
+        // Get expenses within date range
+        $expensesQuery = Expense::where('user_id', Auth::id())
+            ->with('category')
+            ->whereBetween('date', [$dateRange['start'], $dateRange['end']]);
+
+        $expenses = $expensesQuery->latest('date')->paginate(10);
+        $totalExpenses = $expensesQuery->sum('amount');
+
+        // Get current month expenses for comparison
         $monthlyExpenses = Expense::where('user_id', Auth::id())
             ->whereMonth('date', now()->month)
             ->whereYear('date', now()->year)
             ->sum('amount');
 
-        return view('user.expense.index', compact('expenses', 'totalExpenses', 'monthlyExpenses'));
+        return view('user.expense.index', compact(
+            'expenses',
+            'totalExpenses',
+            'monthlyExpenses',
+            'filter',
+            'dateRangeText'
+        ));
     }
 
     /**

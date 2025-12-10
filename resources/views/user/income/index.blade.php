@@ -21,6 +21,9 @@
         </div>
     </div>
 
+    <!-- Date Filter Component -->
+    <x-date-filter :dateRangeText="$dateRangeText" />
+
     <!-- Stats Cards -->
     <div class="row mb-4">
         <div class="col-xl-4 col-md-6 mb-4">

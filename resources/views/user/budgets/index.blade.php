@@ -13,6 +13,9 @@
                 </div>
             </div>
 
+            <!-- Date Filter Component -->
+            <x-date-filter :dateRangeText="$dateRangeText" />
+
             <!-- Budget Statistics -->
             <div class="row mb-4">
                 <div class="col-md-3">
